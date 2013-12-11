@@ -18,7 +18,8 @@ sub files_to_scan {
     $_->gather_files for @{ $dzil->plugins_with(-FileGatherer) };
     $dzil->chrome->logger->unmute;
     # XXX Consider replacing with a LocaleTextDomain-specific file finder?
-    return grep { /[.]pm\z/ } map { $_->name } @{ $dzil->files };
+    return grep { /[.]pm\z/ || m!\A(bin|script)[/\\]! }
+        map { $_->name } @{ $dzil->files };
 }
 
 sub write_pot {
